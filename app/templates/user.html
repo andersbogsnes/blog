@@ -1,19 +1,19 @@
-{% extends 'header.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <h1>{{ user.username }}</h1>
-                <hr>
-                {% for post in posts %}
-                <p>
-                    {{ post.content }}
-                </p>
-                {% endfor %}
-            </div>
+<div class="card offset-md-4" style="width: 300px">
+        <div class="card-block">
+            <h4 class="card-title">{{ user.full_name }}</h4>
+            <h6 class="card-subtitle text-muted">{{ user.username }}</h6>
+            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+        </div>
+        <img src="{{ user.avatar(300) }}" alt="Avatar" class="card-img">
+        <div class="card-block">
+        {% for post in posts %}
+        <p class="card-text">
+            {{ post.content }}
+        </p>
+        {% endfor %}
         </div>
     </div>
-
 {% endblock %}

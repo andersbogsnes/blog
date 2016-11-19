@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="offset-lg-2">
+        <h1>Hi, {{ g.user.full_name }}!</h1>
+       <form>
+           {{ form.hidden_tag() }}
+            <div class="form-group">
+               <label for="blogpost">Blog post</label>
+               <textarea class="form-control" id="blogpost" name="content" rows="10"></textarea>
+           </div>
+           {% for error in form.post.errors %}
+           <span class="alert-danger">[{{ error }}]</span><br>
+           {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}
