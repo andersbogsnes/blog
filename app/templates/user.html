@@ -1,0 +1,19 @@
+{% extends 'header.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1>{{ user.username }}</h1>
+                <hr>
+                {% for post in posts %}
+                <p>
+                    {{ post.content }}
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

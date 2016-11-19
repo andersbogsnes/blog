@@ -1,0 +1,35 @@
+.blog-navbar {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 10px;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin:0 auto;
+}
+
+.intro-header {
+    background: center center no-repeat;
+    background-size: cover;
+    margin-bottom: 50px;
+}
+
+.site-heading {
+    padding: 150px;
+    text-align: center;
+    color: white;
+}
+
+hr.small {
+    max-width: 100px;
+    margin: 15px auto;
+    border-width: 4px;
+    border-color: white;
+}
+
+.small {
+    font-size: 85%;
+}
+
