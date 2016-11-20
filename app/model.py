@@ -1,16 +1,18 @@
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 from hashlib import md5
-import app
+from app import db
 
 
-class User:
-    def __init__(self, username, email, full_name, password=None):
-        self.username = username
-        self.email = email
-        self.full_name = full_name
-        if password:
-            self.pass_hash = generate_password_hash(password, method='pbkdf2:sha256')
-        self.posts = []
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), index=True, unique=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    full_name = db.Column(db.Text)
+    password = db.Column(db.Text)
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
 
     def is_authenticated(self):
         return True
@@ -22,7 +24,7 @@ class User:
         return False
 
     def get_id(self):
-        return self.username
+        return str(self.id)
 
     def avatar(self, size):
         md5hash = md5(self.email.encode('utf-8')).hexdigest()
@@ -32,22 +34,13 @@ class User:
     def validate_login(password_hash, password):
         return check_password_hash(password_hash, password)
 
-    def insert(self):
-        db = app.config['USERS_COLLECTION']
-        db.insert_one({})
 
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, unique=True)
+    body = db.Column(db.String, unique=True)
+    timestamp = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-class Post:
-    def __init__(self, username, text, timestamp):
-        self.author = username
-        self.content = text
-        self.timestamp = timestamp
-
-    def insert(self):
-        db = app.config['POSTS_COLLECTION']
-        users = app.config['USERS_COLLECTION']
-        result = db.insert_one({"author": self.author,
-                                "content": self.content,
-                                "timestamp": self.timestamp})
-        cursor = users.find_one({"_id": self.author})
-
+    def __repr__(self):
+        return '<Post {}>'.format(self.body)

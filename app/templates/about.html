@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h1> About Me </h1>
+<img src="{{ url_for('static', filename='images/me.jpg') }}">
+<p>I'm a relatively recent convert to Python having used it for around 2-3 years now.
+
+I've been working in the insurance industry for about 5 years now,
+mainly involved in customer analytics and sales analytics.
+I started as an Excel power user but I grew quickly frustrated
+when working with large amounts of data. Tried all sorts of hacks
+to speed things up, but it just seemed very cumbersome.</p>
+
+<blockquote>There had to be a better way!</blockquote>
+
+<p>That's when I found Python. </p>
+<p>Python lets me fix all sorts of problems I didn't even know I had!
+From generating reports to creating analyses and forecasts to automating the boring stuff
+-- Python is the answer</p>
+
+<p> In this blog I hope to write about nifty stuff I do in the workplace with Python
+whether it be applying machine learning to some business problem, automating some reports
+or doing some interesting simulations
+
+{% endblock %}

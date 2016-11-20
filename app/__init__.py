@@ -1,10 +1,13 @@
 from flask import Flask
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
 app.config.from_pyfile('config.py')
 app.config.from_envvar('BLOG_SETTINGS')
+
+db = SQLAlchemy(app)
 
 lm = LoginManager()
 lm.init_app(app)
@@ -31,5 +34,5 @@ if not app.debug:
     app.logger.addHandler(mail_handler)
 
 
-from app import views
+from app import views, model
 

@@ -10,13 +10,13 @@
            <div class="collapse navbar-toggleable-xs" id="navbar-header">
                 <ul class="nav navbar-nav float-xs-none float-md-right">
                     <li class="nav-item active">
-                        <a href="#">Home </a>
+                        <a href="{{ url_for('index') }}">Home </a>
                     </li>
                     <li class="nav-item">
                         <a href="#">Archive</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#">About Me</a>
+                        <a href="{{ url_for('about') }}">About Me</a>
                     </li>
                     <li class="nav-item">
                         {%  if g.user.is_authenticated %}

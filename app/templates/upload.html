@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% block content %}
+
+    <div class="offset-md-2">
+        <h1>Hi, {{ g.user.full_name }}!</h1>
+        <small class="text-muted"><a href="{{ url_for('write_post') }}">Write manually?</a></small>
+
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_post') }}">
+        {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-text" placeholder="Enter title" name="title">
+            </div>
+
+            <div class="form-group">
+                <label for="uploadpost">File input</label>
+                <input type="file" class="form-control-file" id="file" name="file">
+                <small id="filehelp" class="form-text text-muted">Upload your .md file</small>
+            </div>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="overwrite">
+                    Overwrite existing documents?
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}

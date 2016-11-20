@@ -2,3 +2,5 @@
 app/config.py
 __pycache__
 tmp
+*.db
+db_repository

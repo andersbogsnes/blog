@@ -3,8 +3,14 @@
 {% block content %}
     <div class="offset-lg-2">
         <h1>Hi, {{ g.user.full_name }}!</h1>
-       <form>
+        <h6><a href="{{ url_for('upload_post') }}">Upload post?</a></h6>
+
+        <form>
            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-text" name="title">
+            </div>
             <div class="form-group">
                <label for="blogpost">Blog post</label>
                <textarea class="form-control" id="blogpost" name="content" rows="10"></textarea>

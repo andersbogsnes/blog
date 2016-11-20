@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+{% block content %}
+{% if post %}
+    <h1>{{ post.title }}</h1>
+    <small class="text-muted">Written by <a href="{{ url_for('user', user_id=post.user_id) }}">{{ post.author }}</a> </small>
+    {{ post.body }}
+
+{% endif %}
+{% endblock %}
