@@ -12,10 +12,13 @@ from sqlalchemy.exc import IntegrityError
 
 def convert_markdown(filename, get_header=False):
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
     with open(filepath, mode='r', encoding='utf-8') as f:
-        text = markdown.markdown(f.read())
+        md = markdown.Markdown(['markdown.extensions.extra', 'markdown.extensions.nl2br', 'markdown.extensions.meta'])
+        text = md.convert(f.read())
+
     if get_header:
-        teaser = text.split('<header>')[1].split('</header>')[0].strip()
+        teaser = md.Meta['summary'][0].strip()
         return Markup(teaser), Markup(text)
     return Markup(text)
 
@@ -111,8 +114,9 @@ def get_user(user_id):
         flash('Author {} not found'.format(user.full_name))
         return redirect('index')
 
-    posts = user.posts
-    return render_template('user.html', user=user, posts=posts)
+    user_posts = [render_post(post) for post in user.posts]
+
+    return render_template('user.html', user=user, posts=user_posts)
 
 
 @app.route('/post/<int:post_id>')
