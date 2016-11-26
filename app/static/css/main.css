@@ -2,6 +2,11 @@
     margin-bottom: 150px;
 }
 
+.help-inline {
+    color: red;
+    font-size: small;
+}
+
 .blog-navbar {
     padding-left: 0;
     padding-right: 0;

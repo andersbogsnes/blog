@@ -6,11 +6,11 @@
             {{ form.hidden_tag() }}
 
             <h2 class="form-signin-heading">Please sign in</h2>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            {{ form.username(class="form-control", placeholder="Username") }}
+            {{ form.password(placeholder="Password", class="form-control") }}
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="remember_me" id="remember_me" value=true>
+                    {{ form.remember_me(value=true) }}
                     Remember me
                 </label>
             </div>
