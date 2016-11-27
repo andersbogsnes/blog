@@ -5,13 +5,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     WTF_CSRF_ENABLED = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
-    DB_NAME = "blog.db"
-    fallback = 'sqlite:///{}'.format(os.path.join(basedir, DB_NAME))
 
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE", fallback)
-    SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'posts')
