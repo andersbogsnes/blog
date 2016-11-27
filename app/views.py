@@ -10,36 +10,20 @@ import os
 from sqlalchemy.exc import IntegrityError
 
 
-def convert_markdown(filename, get_header=False):
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+def convert_markdown(file_object):
+        md = markdown.Markdown(extensions=['markdown.extensions.meta'])
+        md_text = file_object.read().decode('utf-8')
+        text = md.convert(md_text)
+        title = md.Meta['title'][0].strip()
 
-    with open(filepath, mode='r', encoding='utf-8') as f:
-        md = markdown.Markdown(['markdown.extensions.extra', 'markdown.extensions.nl2br', 'markdown.extensions.meta'])
-        text = md.convert(f.read())
-
-    if get_header:
-        teaser = md.Meta['summary'][0].strip()
-        return Markup(teaser), Markup(text)
-    return Markup(text)
-
-
-def render_post(post):
-    """Takes a Post object and converts to dict with rendered markdown"""
-    teaser, text = convert_markdown(post.body, get_header=True)
-
-    return {'user_id': post.author.id,
-            'title': post.title,
-            'author': post.author.full_name,
-            'body': text,
-            'teaser': teaser}
+        return title, text, md_text
 
 
 @app.route('/index')
 @app.route('/')
 def index():
     posts = Post.query.all()
-    all_posts = [render_post(post) for post in posts]
-    return render_template('posts.html', posts=all_posts)
+    return render_template('posts.html', posts=posts)
 
 
 @app.route('/about')
@@ -53,7 +37,7 @@ def write_post():
     form = PostForm()
     if request.method == 'POST' and form.validate_on_submit():
         pass
-        # post = Post(username=g.user, timestamp=datetime.datetime.utcnow(), text=form.content.data)
+        #post = Post(user_id=g.user.id, text=form.content.data, title=)
     return render_template('writepost.html', form=form)
 
 
@@ -62,25 +46,17 @@ def write_post():
 def upload_post():
     form = UploadPostForm()
     if request.method == 'POST' and form.validate_on_submit():
-        filename = secure_filename(form.file.data.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        title = form.title.data
-
-        if os.path.exists(filepath) and not form.overwrite.data:
-            flash('A post with that name already exists! Upload aborted')
-            return redirect(request.url)
-
-        form.file.data.save(filepath)
+        title, body, md_text = convert_markdown(form.file.data)
 
         try:
-            new_post = Post(user_id=g.user.id, title=title, body=filename, timestamp=datetime.datetime.utcnow())
+            new_post = Post(user_id=g.user.id, title=title, body=body, markdown=md_text)
             db.session.add(new_post)
             db.session.commit()
             flash('Post is live!')
 
         except IntegrityError as e:
             db.session.rollback()
-            flash('A post with that name already exists, overwritten')
+            flash('A post with that name already exists, aborted!')
         redirect(url_for('index'))
 
     return render_template('upload.html', form=form)

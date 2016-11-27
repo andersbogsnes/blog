@@ -8,10 +8,6 @@
 
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_post') }}">
         {{ form.hidden_tag() }}
-            <div class="form-group">
-                <label for="title">Title</label>
-                {{ form.title(class="form-text", placeholder="Enter Title") }}
-            </div>
 
             <div class="form-group">
                 <label class="form-control-label" for="uploadpost">File Input</label>

@@ -16,6 +16,5 @@ class PostForm(Form):
 
 
 class UploadPostForm(Form):
-    title = StringField('title', validators=[DataRequired()])
     file = FileField('post', validators=[FileRequired(), FileAllowed(['md'], 'Only Markdown files!')])
     overwrite = BooleanField('overwrite', default=False)

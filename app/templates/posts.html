@@ -3,9 +3,9 @@
 {% block content %}
     {% for post in posts %}
         <h1>{{ post.title }}</h1>
-        <a href="{{ url_for('get_user', user_id=post.user_id) }}">
-            <small class="text-muted">Written by {{ post.author }}</small>
+        <a href="{{ url_for('get_user', user_id=post.author.id) }}">
+            <small class="text-muted">Written by {{ post.author.full_name }}</small>
         </a>
-        <div class="blog-post">{{ post.body }}</div>
+        <div class="blog-post">{{ post.body|safe }}</div>
     {% endfor %}
 {% endblock content%}
