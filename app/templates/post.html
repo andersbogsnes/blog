@@ -2,8 +2,17 @@
 {% block content %}
 {% if post %}
     <h1>{{ post.title }}</h1>
-    <small class="text-muted">Written by <a href="{{ url_for('get_user', user_id=post.user_id) }}">{{ post.author }}</a> </small>
-    {{ post.body }}
+    <small class="text-muted">
+        Written by <a href="{{ url_for('get_user', user_id=post.user_id) }}">
+        {{ post.author.full_name }}</a>
+    <br>
+        {% if g.user.id == post.author.id %}
+            <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit?</a>
+        {% endif %}
+    </small>
+
+
+    {{ post.body|safe }}
 
 {% endif %}
 {% endblock %}

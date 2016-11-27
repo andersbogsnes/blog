@@ -11,8 +11,11 @@
         <div class="card-block">
         {% for post in posts %}
         <p class="card-text">
-            <a href="{{ url_for('get_post',post_id=post.user_id) }}"> {{ post.title }}</a>
-            <p> {{ post.teaser }} </p>
+            <h2>{{ post.title }}</h2>
+            <div class="blog-post"> {{ post.body|safe|truncate(400) }}
+                <br>
+                <a href="{{ url_for('get_post', post_id=post.user_id) }}"><small>more</small></a>
+            </div>
         </p>
         {% endfor %}
         </div>

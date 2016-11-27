@@ -1,22 +1,28 @@
-from flask import render_template, request, flash, redirect, url_for, g, Markup
+from flask import render_template, request, flash, redirect, url_for, g
 from app import app, lm, db
-from .forms import LoginForm, PostForm, UploadPostForm
+from .forms import LoginForm, UploadPostForm, SignUpForm, PostForm
 from .model import User, Post
 from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.utils import secure_filename
 import markdown
-import datetime
-import os
 from sqlalchemy.exc import IntegrityError
+import datetime
 
 
-def convert_markdown(file_object):
-        md = markdown.Markdown(extensions=['markdown.extensions.meta'])
-        md_text = file_object.read().decode('utf-8')
-        text = md.convert(md_text)
-        title = md.Meta['title'][0].strip()
+def convert_markdown(indata, text=False):
+    """Helper function to convert markdown to html.
+    :param indata: File object containging Markdown. If indata is a string, use text=True
+    :param text: Default False. True if inputdata is a text string instead of filestream
+    :returns title, html, original markdown
+    """
 
-        return title, text, md_text
+    md = markdown.Markdown(extensions=['markdown.extensions.meta'])
+    if not text:
+        md_text = indata.read().decode('utf-8')
+    else:
+        md_text = indata
+    text = md.convert(md_text)
+    title = md.Meta['title'][0].strip()
+    return title, text, md_text
 
 
 @app.route('/index')
@@ -29,16 +35,6 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html')
-
-
-@login_required
-@app.route('/writepost', methods=['GET', 'POST'])
-def write_post():
-    form = PostForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        pass
-        #post = Post(user_id=g.user.id, text=form.content.data, title=)
-    return render_template('writepost.html', form=form)
 
 
 @login_required
@@ -90,16 +86,76 @@ def get_user(user_id):
         flash('Author {} not found'.format(user.full_name))
         return redirect('index')
 
-    user_posts = [render_post(post) for post in user.posts]
-
-    return render_template('user.html', user=user, posts=user_posts)
+    return render_template('user.html', user=user, posts=user.posts)
 
 
 @app.route('/post/<int:post_id>')
 def get_post(post_id):
     post = Post.query.get(post_id)
-    output = render_post(post)
-    return render_template('post.html', post=output)
+    return render_template('post.html', post=post)
+
+
+@login_required
+@app.route('/edit_profile/<int:user_id>', methods=['POST', 'GET'])
+def edit_profile(user_id):
+    user = User.query.get(user_id)
+    form = SignUpForm()
+    if user:
+        if not g.user.id == user.id:
+            flash('Need to be logged in!')
+            return redirect('index')
+
+        if request.method == 'POST':
+            if request.form['submit'] == 'cancel':
+                return redirect('index')
+            user.username = form.username.data
+            user.email = form.email.data
+            user.full_name = ' '.join([form.first_name.data, form.last_name.data])
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('edit_profile', user_id=user.id))
+
+        form.username.data = user.username
+        form.email.data = user.email
+        first_name, last_name = user.full_name.split(" ")
+        form.first_name.data = first_name
+        form.last_name.data = last_name
+        return render_template('editprofile.html', user=user, form=form)
+
+    else:
+        flash('User not found!', category='error')
+        return redirect('index')
+
+
+@login_required
+@app.route('/edit_post/<int:post_id>', methods=['POST', 'GET'])
+def edit_post(post_id):
+    post = Post.query.get(post_id)
+    form = PostForm()
+    if not post.user_id == g.user.id:
+        flash("Not logged in as the author")
+        return redirect('index')
+
+    if request.method == 'POST':
+        if request.form['submit'] == 'cancel':
+            return redirect('index')
+        title, html, md_text = convert_markdown(form.content.data, text=True)
+        post.markdown = form.content.data
+        post.body = html
+        post.timestamp = datetime.datetime.now()
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('get_post', post_id=post.id))
+
+    form.content.data = post.markdown
+    return render_template('editpost.html', form=form, user=g.user)
+
+
+@login_required
+@app.route('/posts')
+def posts():
+    posts = g.user.posts
+    return render_template('posts.html', posts=posts)
 
 
 @app.errorhandler(404)
@@ -127,7 +183,3 @@ def logout():
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']

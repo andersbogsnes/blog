@@ -4,8 +4,16 @@
     {% for post in posts %}
         <h1>{{ post.title }}</h1>
         <a href="{{ url_for('get_user', user_id=post.author.id) }}">
-            <small class="text-muted">Written by {{ post.author.full_name }}</small>
+            <small class="text-muted">Written by {{ post.author.full_name }}
         </a>
-        <div class="blog-post">{{ post.body|safe }}</div>
+        {% if g.user.is_authenticated %}
+            <br>
+            <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit?</a>
+        {% endif %}
+        </small>
+        <div class="blog-post">{{ post.body|safe|truncate(500) }}
+            <br>
+            <a href="{{ url_for('get_post', post_id=post.id) }}"><small>more</small></a>
+        </div>
     {% endfor %}
 {% endblock content%}

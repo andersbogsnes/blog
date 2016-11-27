@@ -3,8 +3,6 @@
 
     <div class="offset-md-2">
         <h1>Hi, {{ g.user.full_name }}!</h1>
-        <small class="text-muted"><a href="{{ url_for('write_post') }}">Write manually?</a></small>
-
 
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_post') }}">
         {{ form.hidden_tag() }}

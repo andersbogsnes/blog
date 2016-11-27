@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h1>Edit your profile</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            {{ form.username(class="form-control", id="username") }}
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            {{ form.email(class="form-control", id="email") }}
+        </div>
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            {{ form.first_name(class="form-control", id="first_name") }}
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            {{ form.last_name(class="form-control", id="last_name") }}
+        </div>
+        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" name="submit" class="btn btn-secondary" value="cancel">Cancel</button>
+    </form>
+
+{% endblock %}
