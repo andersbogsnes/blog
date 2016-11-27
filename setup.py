@@ -4,8 +4,8 @@ from argparse import RawTextHelpFormatter
 
 def create_db():
     from migrate.versioning import api
-    from app.config import SQLALCHEMY_DATABASE_URI
-    from app.config import SQLALCHEMY_MIGRATE_REPO
+    from config import SQLALCHEMY_DATABASE_URI
+    from config import SQLALCHEMY_MIGRATE_REPO
     from app import db
     import os.path
 
@@ -26,8 +26,8 @@ def create_db():
 def migrate_db():
     import types
     from migrate.versioning import api
-    from app.config import SQLALCHEMY_DATABASE_URI
-    from app.config import SQLALCHEMY_MIGRATE_REPO
+    from config import SQLALCHEMY_DATABASE_URI
+    from config import SQLALCHEMY_MIGRATE_REPO
     from app import db
 
     print("Starting migration")
@@ -53,8 +53,8 @@ def migrate_db():
 
 def upgrade_db():
     from migrate.versioning import api
-    from app.config import SQLALCHEMY_DATABASE_URI
-    from app.config import SQLALCHEMY_MIGRATE_REPO
+    from config import SQLALCHEMY_DATABASE_URI
+    from config import SQLALCHEMY_MIGRATE_REPO
 
     print("Upgrading DB")
     api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
@@ -64,8 +64,8 @@ def upgrade_db():
 
 def downgrade_db():
     from migrate.versioning import api
-    from app.config import SQLALCHEMY_DATABASE_URI
-    from app.config import SQLALCHEMY_MIGRATE_REPO
+    from config import SQLALCHEMY_DATABASE_URI
+    from config import SQLALCHEMY_MIGRATE_REPO
 
     print("Downgrading DB")
     v = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
