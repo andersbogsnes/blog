@@ -4,3 +4,4 @@ __pycache__
 tmp
 *.db
 db_repository
+/test_markdown.py

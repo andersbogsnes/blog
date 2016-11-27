@@ -1,6 +1,7 @@
 from werkzeug.security import check_password_hash
 from hashlib import md5
 from app import db
+import datetime
 
 
 class User(db.Model):
@@ -40,7 +41,7 @@ class Post(db.Model):
     title = db.Column(db.Text, unique=True)
     body = db.Column(db.String)
     markdown = db.Column(db.String)
-    timestamp = db.Column(db.DateTime)
+    timestamp = db.Column(db.DateTime, default=datetime.datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
