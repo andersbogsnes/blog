@@ -1,6 +1,6 @@
 from flask_wtf import Form
 from flask_wtf.file import FileRequired, FileAllowed, FileField
-from wtforms import StringField, BooleanField, PasswordField
+from wtforms import StringField, BooleanField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired
 
 
@@ -12,7 +12,7 @@ class LoginForm(Form):
 
 class PostForm(Form):
     title = StringField('title', validators=[DataRequired()])
-    content = StringField('content', validators=[DataRequired()])
+    content = TextAreaField('content', validators=[DataRequired()])
 
 
 class UploadPostForm(Form):
