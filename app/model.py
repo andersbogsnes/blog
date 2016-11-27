@@ -38,7 +38,8 @@ class User(db.Model):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, unique=True)
-    body = db.Column(db.String, unique=True)
+    body = db.Column(db.String)
+    markdown = db.Column(db.String)
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 

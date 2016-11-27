@@ -5,3 +5,4 @@ Flask-WTF==0.12
 Markdown==2.6.7
 MarkupSafe==0.23
 sqlalchemy-migrate==0.10.0
+gunicorn==19.6
