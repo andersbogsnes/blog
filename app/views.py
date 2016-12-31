@@ -28,7 +28,7 @@ def convert_markdown(indata, text=False):
 @app.route('/index')
 @app.route('/')
 def index():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('posts.html', posts=posts)
 
 

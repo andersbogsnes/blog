@@ -2,6 +2,7 @@ from werkzeug.security import check_password_hash
 from hashlib import md5
 from app import db
 import datetime
+from sqlalchemy.exc import IntegrityError
 
 
 class User(db.Model):
@@ -12,8 +13,21 @@ class User(db.Model):
     password = db.Column(db.Text)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
+    def __init__(self, username, email, password, full_name):
+        self.username = username
+        self.email = email
+        self.password = password
+        self.full_name = full_name
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+    def create(self):
+        db.session.add(self)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            print("User already exists")
 
     def is_authenticated(self):
         return True
