@@ -1,0 +1,31 @@
+name: blog
+channels: !!python/tuple
+- defaults
+dependencies:
+- pip=9.0.1=py35_1
+- python=3.5.2=0
+- setuptools=27.2.0=py35_1
+- vs2015_runtime=14.0.25123=0
+- wheel=0.29.0=py35_0
+- pip:
+  - alembic==0.8.9
+  - click==6.6
+  - flask==0.11.1
+  - flask-login==0.3.2
+  - flask-migrate==2.0.1
+  - flask-script==2.0.5
+  - flask-sqlalchemy==2.1
+  - flask-wtf==0.12
+  - gunicorn==19.6.0
+  - itsdangerous==0.24
+  - jinja2==2.8
+  - mako==1.0.6
+  - markdown==2.6.7
+  - markupsafe==0.23
+  - psycopg2==2.6.2
+  - python-editor==1.0.3
+  - sqlalchemy==1.1.4
+  - werkzeug==0.11.11
+  - wtforms==2.1
+prefix: C:\Users\Anders\Anaconda3\envs\blog
+
