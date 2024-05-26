@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash
 from hashlib import md5
-from app import db
+from blog.extensions import db
 import datetime
 from sqlalchemy.exc import IntegrityError
 

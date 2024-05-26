@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blog"
+dynamic = ["version"]
+authors = [
+    { name = "Anders Bogsnes", email = "andersbogsnes@gmail.com" }]
+dependencies = [
+    "flask",
+    "flask-login",
+    "flask-sqlalchemy",
+    "flask-wtf",
+    "flask-migrate",
+    "Markdown",
+    "MarkupSafe",
+    "gunicorn",
+    "psycopg[binary]",
+    "wtforms",
+]
+
+[tool.setuptools]
+packages = ["blog"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+blog = "manage:cli"

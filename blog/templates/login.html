@@ -3,7 +3,7 @@
 {% block content %}
         <form action="" method="post" role="form" class="form-signin">
 
-            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
 
             <h2 class="form-signin-heading">Please sign in</h2>
             {{ form.username(class="form-control", placeholder="Username") }}

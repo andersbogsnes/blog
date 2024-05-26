@@ -1,5 +1,5 @@
 from .test_base import BaseTestCase
-from app.model import User
+from blog.model import User
 from flask import url_for
 
 

@@ -1,20 +1,19 @@
-import os
-from flask_script import Manager
-from flask_migrate import Migrate, MigrateCommand
+import click
+from flask.cli import FlaskGroup
 
-from app import app, db
+from blog.app import create_app
+from blog.extensions import db
 
-app.config.from_object(os.environ['APP_SETTINGS'])
 
-migrate = Migrate(app, db)
-manager = Manager(app)
+@click.group(cls=FlaskGroup, create_app=create_app)
+def cli():
+    pass
 
-manager.add_command('db', MigrateCommand)
 
-@manager.command
+@cli.command()
 def create_admin():
-    from app import db
-    from app.model import User
+    """Creates the admin user."""
+    from blog.model import User
     from getpass import getpass
     from werkzeug.security import generate_password_hash
 
@@ -31,4 +30,4 @@ def create_admin():
     db.session.commit()
 
 if __name__ == '__main__':
-    manager.run()
+    cli()

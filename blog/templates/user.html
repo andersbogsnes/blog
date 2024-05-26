@@ -14,7 +14,7 @@
             <h2>{{ post.title }}</h2>
             <div class="blog-post"> {{ post.body|safe|truncate(400) }}
                 <br>
-                <a href="{{ url_for('get_post', post_id=post.user_id) }}"><small>more</small></a>
+                <a href="{{ url_for('blog.get_post', post_id=post.user_id) }}"><small>more</small></a>
             </div>
         </p>
         {% endfor %}

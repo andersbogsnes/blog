@@ -1,10 +1,10 @@
 from flask_testing import TestCase
 
-from app import app, db
+from blog import app, extensions
 
 
 class BaseTestCase(TestCase):
-    """Baseclass for testing app"""
+    """Baseclass for testing blog"""
 
     def create_app(self):
         app.config.from_object('config.TestingConfig')
