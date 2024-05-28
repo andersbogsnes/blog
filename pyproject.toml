@@ -27,4 +27,4 @@ packages = ["blog"]
 dev = ["pytest"]
 
 [project.scripts]
-blog = "manage:cli"
+blog = "blog.manage:cli"

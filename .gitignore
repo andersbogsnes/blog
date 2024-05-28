@@ -1,5 +1,4 @@
 .idea
-blog/config.py
 __pycache__
 tmp
 *.db

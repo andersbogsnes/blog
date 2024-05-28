@@ -6,8 +6,9 @@ from flask_login import login_user, logout_user, current_user, login_required
 from sqlalchemy.exc import IntegrityError
 
 from blog.extensions import lm, db
-from .forms import LoginForm, UploadPostForm, SignUpForm, PostForm
-from .model import User, Post
+from blog.forms import LoginForm, UploadPostForm, SignUpForm, PostForm
+from blog.model import User, Post
+
 
 router = Blueprint('blog', __name__)
 
@@ -87,7 +88,7 @@ def login():
 def get_user(user_id):
     user = User.query.get(user_id)
     if user is None:
-        flash('Author {} not found'.format(user.full_name))
+        flash('Author {} not found'.format(user_id))
         return redirect('index')
 
     return render_template('user.html', user=user, posts=user.posts)
